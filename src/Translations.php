@@ -2,13 +2,21 @@
 
 namespace Mridhulka\LaravelOxfordDictionariesApi;
 
-use League\CommonMark\Parser\Block\BlockContinue;
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
-use Mridhulka\LaravelOxfordDictionariesApi\Helper;
 
-class Translations{
+class Translations
+{
     use Helper;
-    public string $wordId, $sourceLangTranslate, $targetLangTranslate, $fields, $domains, $registers, $strictMatch, $lexicalCategory, $grammaticalFeatures;
+    public string $wordId;
+    public string $sourceLangTranslate;
+    public string $targetLangTranslate;
+    public string $fields;
+    public string $domains;
+    public string $registers;
+    public string $strictMatch;
+    public string $lexicalCategory;
+    public string $grammaticalFeatures;
+
     public function sourceLangTranslate(string $sourceLangTranslate)
     {
         $this->sourceLangTranslate = $sourceLangTranslate;
@@ -68,10 +76,9 @@ class Translations{
     public function grammaticalFeatures(string $grammaticalFeatures)
     {
         $this->grammaticalFeatures = $this->removeWhitespace($grammaticalFeatures);
+
         return $this;
     }
-
-    
 
     public function get(): array
     {
@@ -80,10 +87,7 @@ class Translations{
 
         $parameters = $this->extractParameters($parameters);
 
-
-        
-
-        return OxfordApiRequest::execute($endpoint, $parameters); 
+        return OxfordApiRequest::execute($endpoint, $parameters);
     }
 
     public function setEndpoint(array $parameters): string
@@ -93,11 +97,10 @@ class Translations{
 
     public function extractParameters(array $parameters): array
     {
-
         match (true) {
-            !isset($parameters['targetLangTranslate']) => throw MissingArgumentException::create('targetLangTranslate'),
-            !isset($parameters['sourceLangTranslate']) => throw MissingArgumentException::create('sourceLangTranslate'),
-            !isset($parameters['wordId']) => throw MissingArgumentException::create('wordId'),
+            ! isset($parameters['targetLangTranslate']) => throw MissingArgumentException::create('targetLangTranslate'),
+            ! isset($parameters['sourceLangTranslate']) => throw MissingArgumentException::create('sourceLangTranslate'),
+            ! isset($parameters['wordId']) => throw MissingArgumentException::create('wordId'),
             default => null
         };
 

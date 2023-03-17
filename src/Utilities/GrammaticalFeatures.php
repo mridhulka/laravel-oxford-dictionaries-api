@@ -2,14 +2,17 @@
 
 namespace Mridhulka\LaravelOxfordDictionariesApi\Utilities;
 
-use Mridhulka\LaravelOxfordDictionariesApi\Helper;
-use Mridhulka\LaravelOxfordDictionariesApi\OxfordApiRequest;
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\UnwantedArgumentException;
+use Mridhulka\LaravelOxfordDictionariesApi\Helper;
+use Mridhulka\LaravelOxfordDictionariesApi\OxfordApiRequest;
 
-class GrammaticalFeatures {
+class GrammaticalFeatures
+{
     use Helper;
-    public string $sourceLang, $sourceLangGrammatical, $targetLangGrammatical;
+    public string $sourceLang;
+    public string $sourceLangGrammatical;
+    public string $targetLangGrammatical;
 
     public function sourceLang(string $sourceLang)
     {
@@ -32,22 +35,21 @@ class GrammaticalFeatures {
         return $this;
     }
 
-
     public function get(): array
     {
         $parameters = get_object_vars($this);
 
         $endpoint = $this->setEndpoint($parameters);
 
-        return OxfordApiRequest::execute($endpoint); 
+        return OxfordApiRequest::execute($endpoint);
     }
 
     public function setEndpoint(array $parameters): string
     {
-        if (!isset($parameters['sourceLang'])) {
+        if (! isset($parameters['sourceLang'])) {
             return match (true) {
-                !isset($parameters['targetLangGrammatical']) => throw MissingArgumentException::create('targetLangGrammatical'),
-                !isset($parameters['sourceLangDomains']) => throw MissingArgumentException::create('sourceLangDomains'),
+                ! isset($parameters['targetLangGrammatical']) => throw MissingArgumentException::create('targetLangGrammatical'),
+                ! isset($parameters['sourceLangDomains']) => throw MissingArgumentException::create('sourceLangDomains'),
                 default => '/domains/' . $parameters['sourceLangGrammatical'] . '/' . $parameters['sourceLangGrammatical']
             };
         }
@@ -57,7 +59,7 @@ class GrammaticalFeatures {
             isset($parameters['sourceLangGrammatical']) => throw UnwantedArgumentException::create('sourceLangGrammatical'),
             default => '/domains/' . $parameters['sourceLang']
         };
-        
+
         /* if (!isset($parameters['sourceLang'])) {
             throw MissingArgumentException::create('sourceLang');
         }

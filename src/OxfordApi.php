@@ -2,15 +2,11 @@
 
 namespace Mridhulka\LaravelOxfordDictionariesApi;
 
-use Mridhulka\LaravelOxfordDictionariesApi\Search;
-use Mridhulka\LaravelOxfordDictionariesApi\Entries;
-use Mridhulka\LaravelOxfordDictionariesApi\SearchThesaurus;
-use Mridhulka\LaravelOxfordDictionariesApi\Utilities\Fields;
 use Mridhulka\LaravelOxfordDictionariesApi\Utilities\Domains;
+use Mridhulka\LaravelOxfordDictionariesApi\Utilities\Fields;
 use Mridhulka\LaravelOxfordDictionariesApi\Utilities\Filters;
-use Mridhulka\LaravelOxfordDictionariesApi\SearchTranslations;
-use Mridhulka\LaravelOxfordDictionariesApi\Utilities\Languages;
 use Mridhulka\LaravelOxfordDictionariesApi\Utilities\GrammaticalFeatures;
+use Mridhulka\LaravelOxfordDictionariesApi\Utilities\Languages;
 
 class OxfordApi
 {

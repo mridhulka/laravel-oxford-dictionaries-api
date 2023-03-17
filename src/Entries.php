@@ -3,11 +3,18 @@
 namespace Mridhulka\LaravelOxfordDictionariesApi;
 
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
-use Mridhulka\LaravelOxfordDictionariesApi\Helper;
 
-class Entries{
+class Entries
+{
     use Helper;
-    public string $wordId, $sourceLang, $fields, $domains, $registers, $strictMatch, $lexicalCategory, $grammaticalFeatures;
+    public string $wordId;
+    public string $sourceLang;
+    public string $fields;
+    public string $domains;
+    public string $registers;
+    public string $strictMatch;
+    public string $lexicalCategory;
+    public string $grammaticalFeatures;
 
     public function sourceLang(string $sourceLang)
     {
@@ -61,10 +68,9 @@ class Entries{
     public function grammaticalFeatures(string $grammaticalFeatures)
     {
         $this->grammaticalFeatures = $this->removeWhitespace($grammaticalFeatures);
+
         return $this;
     }
-
-    
 
     public function get(): array
     {
@@ -73,9 +79,7 @@ class Entries{
         $endpoint = $this->setEndpoint($parameters);
         $parameters = $this->extractParameters($parameters);
 
-        
-
-        return OxfordApiRequest::execute($endpoint, $parameters); 
+        return OxfordApiRequest::execute($endpoint, $parameters);
     }
 
     public function setEndpoint(array $parameters): string
@@ -85,15 +89,14 @@ class Entries{
 
     public function extractParameters(array $parameters): array
     {
-        if (!isset($parameters['sourceLang'])) {
+        if (! isset($parameters['sourceLang'])) {
             throw MissingArgumentException::create('sourceLang');
         }
 
-        if (!isset($parameters['wordId'])) {
+        if (! isset($parameters['wordId'])) {
             throw MissingArgumentException::create('wordId');
         }
 
-     
         unset($parameters['sourceLang'], $parameters['wordId']);
 
         return $parameters;

@@ -3,11 +3,14 @@
 namespace Mridhulka\LaravelOxfordDictionariesApi;
 
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
-use Mridhulka\LaravelOxfordDictionariesApi\Helper;
 
-class Lemmas {
+class Lemmas
+{
     use Helper;
-    public string $wordId, $sourceLang, $lexicalCategory, $grammaticalFeatures;
+    public string $wordId;
+    public string $sourceLang;
+    public string $lexicalCategory;
+    public string $grammaticalFeatures;
 
     public function sourceLang(string $sourceLang)
     {
@@ -30,36 +33,32 @@ class Lemmas {
         return $this;
     }
 
-
     public function grammaticalFeatures(string $grammaticalFeatures)
     {
         $this->grammaticalFeatures = $this->removeWhitespace($grammaticalFeatures);
+
         return $this;
     }
-
-    
 
     public function get(): array
     {
         $query = get_object_vars($this);
 
-        if (!isset($query['sourceLang'])) {
+        if (! isset($query['sourceLang'])) {
             throw MissingArgumentException::create('sourceLang');
         }
 
-        if (!isset($query['wordId'])) {
+        if (! isset($query['wordId'])) {
             throw MissingArgumentException::create('sourceLang');
         }
 
-      
         $sourceLang = $query['sourceLang'];
         $wordId = $query['wordId'];
 
         unset($query['sourceLang'], $query['wordId']);
 
-        
         $endpoint = '/entries/' . $sourceLang . '/' . $wordId;
 
-        return OxfordApiRequest::execute($endpoint, $query); 
+        return OxfordApiRequest::execute($endpoint, $query);
     }
 }

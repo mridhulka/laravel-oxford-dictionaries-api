@@ -14,14 +14,13 @@ class LaravelOxfordDictionariesApiServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../config/oxfordapi.php', 'oxfordapi');
 
-
         /* dd("test"); */
     }
 
     public function register()
     {
-    /*     $this->app->singleton(LaravelOxfordDictionariesApi::class, function () {
-            return new LaravelOxfordDictionariesApi();
-        }); */
+        /*     $this->app->singleton(LaravelOxfordDictionariesApi::class, function () {
+                return new LaravelOxfordDictionariesApi();
+            }); */
     }
 }

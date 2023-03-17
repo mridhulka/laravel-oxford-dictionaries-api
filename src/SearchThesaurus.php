@@ -5,8 +5,13 @@ namespace Mridhulka\LaravelOxfordDictionariesApi;
 use Mridhulka\LaravelOxfordDictionariesApi\Contracts\SearchInterface;
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
 
-class SearchThesaurus implements SearchInterface{
-    public string $sourceLang, $q, $prefix, $offset, $limit;
+class SearchThesaurus implements SearchInterface
+{
+    public string $sourceLang;
+    public string $q;
+    public string $prefix;
+    public string $offset;
+    public string $limit;
 
     public function sourceLang(string $sourceLang)
     {
@@ -14,8 +19,6 @@ class SearchThesaurus implements SearchInterface{
 
         return $this;
     }
-
-  
 
     public function q(string $q)
     {
@@ -45,8 +48,6 @@ class SearchThesaurus implements SearchInterface{
         return $this;
     }
 
-
-
     public function get(): array
     {
         $parameters = get_object_vars($this);
@@ -54,7 +55,7 @@ class SearchThesaurus implements SearchInterface{
         $endpoint = $this->setEndpoint($parameters);
         $parameters = $this->extractParameters($parameters);
 
-        return OxfordApiRequest::execute($endpoint, $parameters); 
+        return OxfordApiRequest::execute($endpoint, $parameters);
     }
 
     public function setEndpoint(array $parameters): string
@@ -64,10 +65,11 @@ class SearchThesaurus implements SearchInterface{
 
     public function extractParameters(array $parameters): array
     {
-        if (!isset($parameters['sourceLang'])) {
+        if (! isset($parameters['sourceLang'])) {
             throw MissingArgumentException::create('sourceLang');
         }
         unset($parameters['sourceLang']);
+
         return $parameters;
     }
 }
