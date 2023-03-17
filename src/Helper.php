@@ -8,4 +8,9 @@ trait Helper{
         return str_replace(' ','', $string);
     } 
 
+    public function arrayImplode(array $array)
+    {
+        return implode(',', $array);
+    } 
+
 }
