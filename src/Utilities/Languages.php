@@ -4,8 +4,10 @@ namespace Mridhulka\LaravelOxfordDictionariesApi\Utilities;
 
 use Mridhulka\LaravelOxfordDictionariesApi\OxfordApiRequest;
 
-class Languages{
-    public string $sourceLanguage, $targetLanguage;
+class Languages
+{
+    public string $sourceLanguage;
+    public string $targetLanguage;
 
     public function sourceLanguage(string $sourceLanguage)
     {
@@ -21,19 +23,17 @@ class Languages{
         return $this;
     }
 
-
     public function get(): array
     {
         $parameters = get_object_vars($this);
 
         $endpoint = $this->setEndpoint();
 
-        return OxfordApiRequest::execute($endpoint, $parameters); 
+        return OxfordApiRequest::execute($endpoint, $parameters);
     }
 
     public function setEndpoint(): string
     {
         return '/languages';
     }
-
 }

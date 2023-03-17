@@ -4,7 +4,8 @@ namespace Mridhulka\LaravelOxfordDictionariesApi\Utilities;
 
 use Mridhulka\LaravelOxfordDictionariesApi\OxfordApiRequest;
 
-class Fields{
+class Fields
+{
     public string $endpoint;
 
     public function endpoint(string $endpoint)
@@ -14,19 +15,18 @@ class Fields{
         return $this;
     }
 
-
     public function get(): array
     {
         $parameters = get_object_vars($this);
 
         $endpoint = $this->setEndpoint($parameters);
 
-        return OxfordApiRequest::execute($endpoint); 
+        return OxfordApiRequest::execute($endpoint);
     }
 
     public function setEndpoint(array $parameters): string
     {
-        if (!isset($parameters['endpoint'])) {
+        if (! isset($parameters['endpoint'])) {
             return '/fields';
         }
 

@@ -3,11 +3,13 @@
 namespace Mridhulka\LaravelOxfordDictionariesApi;
 
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
-use Mridhulka\LaravelOxfordDictionariesApi\Helper;
 
-class Sentences{
+class Sentences
+{
     use Helper;
-    public string $wordId, $sourceLang, $strictMatch;
+    public string $wordId;
+    public string $sourceLang;
+    public string $strictMatch;
 
     public function sourceLang(string $sourceLang)
     {
@@ -16,14 +18,12 @@ class Sentences{
         return $this;
     }
 
-
     public function wordId(string $wordId)
     {
         $this->wordId = $wordId;
 
         return $this;
     }
-
 
     public function strictMatch(string $strictMatch)
     {
@@ -39,7 +39,7 @@ class Sentences{
         $endpoint = $this->setEndpoint($parameters);
         $parameters = $this->extractParameters($parameters);
 
-        return OxfordApiRequest::execute($endpoint, $parameters); 
+        return OxfordApiRequest::execute($endpoint, $parameters);
     }
 
     public function setEndpoint(array $parameters): string
@@ -49,15 +49,14 @@ class Sentences{
 
     public function extractParameters(array $parameters): array
     {
-        if (!isset($parameters['sourceLang'])) {
+        if (! isset($parameters['sourceLang'])) {
             throw MissingArgumentException::create('sourceLang');
         }
 
-        if (!isset($parameters['wordId'])) {
+        if (! isset($parameters['wordId'])) {
             throw MissingArgumentException::create('wordId');
         }
 
-     
         unset($parameters['sourceLang'], $parameters['wordId']);
 
         return $parameters;
