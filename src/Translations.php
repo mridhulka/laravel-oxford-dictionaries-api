@@ -2,22 +2,23 @@
 
 namespace Mridhulka\LaravelOxfordDictionariesApi;
 
+use League\CommonMark\Parser\Block\BlockContinue;
 use Mridhulka\LaravelOxfordDictionariesApi\Exceptions\MissingArgumentException;
 use Mridhulka\LaravelOxfordDictionariesApi\Helper;
 
 class Translations{
     use Helper;
-    public string $wordId, $sourceLang, $targetLang, $fields, $domains, $registers, $strictMatch, $lexicalCategory, $grammaticalFeatures;
-    public function sourceLang(string $sourceLang)
+    public string $wordId, $sourceLangTranslate, $targetLangTranslate, $fields, $domains, $registers, $strictMatch, $lexicalCategory, $grammaticalFeatures;
+    public function sourceLangTranslate(string $sourceLangTranslate)
     {
-        $this->sourceLang = $sourceLang;
+        $this->sourceLangTranslate = $sourceLangTranslate;
 
         return $this;
     }
 
-    public function targetLang(string $targetLang)
+    public function targetLangTranslate(string $targetLangTranslate)
     {
-        $this->targetLang = $targetLang;
+        $this->targetLangTranslate = $targetLangTranslate;
 
         return $this;
     }
@@ -31,14 +32,14 @@ class Translations{
 
     public function lexicalCategory(string $fields)
     {
-        $this->lexicalCategory = $this->lexicalCategory($fields);
+        $this->lexicalCategory = $this->removeWhitespace($fields);
 
         return $this;
     }
 
-    public function fields(string $fields)
+    public function fields(array $fields)
     {
-        $this->fields = $this->removeWhitespace($fields);
+        $this->fields = $this->arrayImplode($fields);
 
         return $this;
     }
@@ -75,9 +76,10 @@ class Translations{
     public function get(): array
     {
         $parameters = get_object_vars($this);
+        $endpoint = $this->setEndpoint($parameters);
+
         $parameters = $this->extractParameters($parameters);
 
-        $endpoint = $this->setEndpoint($parameters);
 
         
 
@@ -86,19 +88,20 @@ class Translations{
 
     public function setEndpoint(array $parameters): string
     {
-        return '/translations/' . $parameters['sourceLang'] . '/' . $parameters['targetLang'] . '/' . $parameters['wordId'];
+        return '/translations/' . $parameters['sourceLangTranslate'] . '/' . $parameters['targetLangTranslate'] . '/' . $parameters['wordId'];
     }
 
     public function extractParameters(array $parameters): array
     {
 
         match (true) {
-            !isset($parameters['targetLang']) => throw MissingArgumentException::create('targetLang'),
-            !isset($parameters['sourceLang']) => throw MissingArgumentException::create('sourceLang'),
-            !isset($parameters['wordId']) => throw MissingArgumentException::create('wordId')
+            !isset($parameters['targetLangTranslate']) => throw MissingArgumentException::create('targetLangTranslate'),
+            !isset($parameters['sourceLangTranslate']) => throw MissingArgumentException::create('sourceLangTranslate'),
+            !isset($parameters['wordId']) => throw MissingArgumentException::create('wordId'),
+            default => null
         };
 
-        unset($parameters['sourceLang'], $parameters['targetLang'], $parameters['wordId']);
+        unset($parameters['sourceLangTranslate'], $parameters['targetLangTranslate'], $parameters['wordId']);
 
         return $parameters;
     }
