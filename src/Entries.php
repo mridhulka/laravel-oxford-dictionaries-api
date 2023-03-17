@@ -37,9 +37,9 @@ class Entries
         return $this;
     }
 
-    public function fields(string $fields)
+    public function fields(array $fields)
     {
-        $this->fields = $this->removeWhitespace($fields);
+        $this->fields = $this->arrayImplode($fields);
 
         return $this;
     }
